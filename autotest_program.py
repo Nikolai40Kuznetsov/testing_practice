@@ -2,8 +2,21 @@ import unittest
 from math import pi
 
 def area(r):
-    return pi * r * r
+    if isinstance(r, str) is True:
+        area = "TypeError"
+    elif r < 0:
+        area = "ValueError: radius can't be negative"
+    else:
+        area = pi * r * r
+    return area
+
 def circumference(r):
+    if not isinstance(r, (int,float)):
+        raise TypeError("Expected numeral")
+    if r < 0:
+        raise ValueError("Radius can't be negative")
+    else:
+        area = pi * r * r
     return r * pi * 2
 
 class TestArea(unittest.TestCase):
@@ -20,9 +33,10 @@ class TestArea(unittest.TestCase):
         self.assertEqual(area(0.1), 0.01*pi)
 
     def test_error_input(self):
-        self.assertEqual(area("bggg"), TypeError)
-        self.assertEqual(area(""), TypeError)
-        self.assertEqual(area("10**-9"), ValueError)
-
+        with self.assertRaises(TypeError):
+            circumference("bggg")
+            circumference("")
+            circumference("10**-9")
+            
 if __name__ == "__main__":
     unittest.main()
